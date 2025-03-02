@@ -11,7 +11,8 @@ A powerful spreadsheet application built with vanilla JavaScript that mimics Goo
 
 (Other features are given below you can scroll down to read)
 
-UI IMAGES
+UI IMAGES 
+
 ![Image](https://github.com/user-attachments/assets/3984631a-6179-4f30-aaf1-634253a02d56)
 
 ![Image](https://github.com/user-attachments/assets/c44b5f6c-a3eb-479e-a334-cd9d0076a69c)
