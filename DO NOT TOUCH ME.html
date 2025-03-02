@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-Sheets</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="menu-bar">
+            <div class="menu-group">
+                <span style="font-weight: bold;">G-Sheets</span>
+                <span class="subtitle">by Anmol Dubey</span>
+                <button id="undoBtn" class="menu-btn" title="Undo (Ctrl+Z)">↩️ Undo</button>
+                <button id="redoBtn" class="menu-btn" title="Redo (Ctrl+Y)">↪️ Redo</button>
+                <button id="saveBtn" class="menu-btn">💾 Save</button>
+                <button id="loadBtn" class="menu-btn">📂 Load</button>
+                <button id="exportBtn" class="menu-btn">📤 Export</button>
+                <button id="dragBtn" class="menu-btn">↔️ Drag</button>
+                <input type="file" id="fileInput" style="display: none" accept=".txt,.json">
+            </div>
+            <div class="menu-group theme-controls">
+                <select id="themeSelect" class="theme-select">
+                    <option value="default">Default Theme</option>
+                    <option value="light-blue">Light Blue</option>
+                    <option value="dark-grey">Dark Grey</option>
+                    <option value="olive">Olive</option>
+                    <option value="light-red">Light Red</option>
+                </select>
+                <button id="darkModeBtn" class="menu-btn">🌙 Dark Mode</button>
+            </div>
+        </div>
+        <div class="cell-actions">
+            <select id="fontFamily">
+                <option value="arial">Arial</option>
+                <option value="times">Times New Roman</option>
+                <option value="courier">Courier New</option>
+            </select>
+            <select id="fontSize">
+                <option value="12">12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+            </select>
+            <div class="format-group">
+                <button id="bold" title="Bold">B</button>
+                <button id="italic" title="Italic">I</button>
+                <button id="underline" title="Underline">U</button>
+            </div>
+            <div class="format-group">
+                <button id="alignLeft" title="Align Left">⫷</button>
+                <button id="alignCenter" title="Align Center">⫸⫷</button>
+                <button id="alignRight" title="Align Right">⫸</button>
+            </div>
+            <div class="format-group">
+                <input type="color" id="textColor" title="Text Color">
+                <input type="color" id="bgColor" title="Background Color">
+            </div>
+            <div class="format-group">
+                <button id="copy" title="Copy">📋</button>
+                <button id="cut" title="Cut">✂️</button>
+                <button id="paste" title="Paste">📌</button>
+            </div>
+        </div>
+        <div class="formula-bar">
+            <span id="activeCell"></span>
+            <span class="fx-label">fx</span>
+            <input type="text" id="formulaInput" placeholder="Enter formula">
+        </div>
+        <div class="grid-container">
+            <table id="spreadsheet"></table>
+        </div>
+        <div class="sheet-bar">
+            <button id="addSheet" class="add-sheet-btn">+ Add Sheet</button>
+            <div id="sheetTabs" class="sheet-tabs"></div>
+        </div>
+    </div>
+    <script src="database.js"></script>
+    <script src="formula.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 

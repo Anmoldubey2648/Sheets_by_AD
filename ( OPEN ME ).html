@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-Sheets by Anmol Dubey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --hover-color: #5c9eff;
+            --border-color: #3c4043;
+            --text-color: #e8eaed;
+            --bg-color: #202124;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --card-bg: #2d2e31;
+            --hover-bg: #3c4043;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--card-bg);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            font-size: 20px;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .template-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .template-card:hover {
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        .template-preview {
+            height: 140px;
+            background: linear-gradient(45deg, #2d2e31, #3c4043);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .template-card:hover .template-preview {
+            background: linear-gradient(45deg, #3c4043, #4d5156);
+        }
+
+        .template-info {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .template-title {
+            font-size: 14px;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .recent-files {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .recent-file-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .delete-btn, .download-btn {
+            position: absolute;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            opacity: 0;
+            font-size: 18px;
+        }
+
+        .delete-btn {
+            right: 16px;
+            color: #9aa0a6;
+        }
+
+        .download-btn {
+            right: 56px;
+            color: #9aa0a6;
+        }
+
+        .recent-file-item:hover .delete-btn,
+        .recent-file-item:hover .download-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: var(--hover-bg);
+            color: #f28b82;
+        }
+
+        .download-btn:hover {
+            background: var(--hover-bg);
+            color: var(--primary-color);
+        }
+
+        .file-icon {
+            width: 36px;
+            height: 36px;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #3c4043;
+            border-radius: 4px;
+            color: var(--primary-color);
+        }
+
+        .file-info {
+            flex-grow: 1;
+        }
+
+        .file-title {
+            font-size: 14px;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .file-date {
+            font-size: 12px;
+            color: #9aa0a6;
+            margin: 4px 0 0;
+        }
+
+        .create-new {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 32px;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .create-new:hover {
+            background: var(--hover-color);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .workspace-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .workspace-title {
+            font-size: 20px;
+            margin: 0 0 12px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .workspace-info {
+            color: #9aa0a6;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            margin-bottom: 40px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0 16px;
+                margin: 24px auto;
+            }
+
+            .templates-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+
+            .template-preview {
+                height: 100px;
+            }
+        }
+
+        .file-type {
+            background-color: #3c4043;
+            color: var(--text-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <span style="font-size: 32px">📊</span>
+            <span>G-Sheets by Anmol Dubey</span>
+        </a>
+        <div class="user-section">
+            <div class="user-avatar">AD</div>
+            </div>
+    </header>
+
+    <main class="main-content">
+        <a href="DO NOT TOUCH ME.html" class="create-new">
+            <span style="margin-right: 12px; font-size: 20px">+</span>
+            Create new spreadsheet
+        </a>
+
+        <div class="workspace-section">
+            <h2 class="workspace-title">
+                <span style="font-size: 24px">💼</span>
+                My Workspace
+            </h2>
+            <p class="workspace-info">Create and manage your spreadsheets. All your work is automatically saved.</p>
+        </div>
+
+        <h2 class="section-title">
+            <span style="font-size: 20px">🕒</span>
+            Recent spreadsheets
+        </h2>
+        <div class="recent-files">
+            <div class="empty-state">
+                <div class="empty-state-icon">📊</div>
+                <h3 class="empty-state-title">No spreadsheets yet</h3>
+                <p class="empty-state-text">Create a new spreadsheet to get started</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">
+            <span style="font-size: 20px">✨</span>
+            Start a new spreadsheet
+        </h2>
+        <div class="templates-grid">
+            <a href="DO NOT TOUCH ME.html" class="template-card">
+                <div class="template-preview">
+                    <span style="font-size: 32px">📊</span>
+                </div>
+                <div class="template-info">
+                    <h3 class="template-title">Blank spreadsheet</h3>
+        </div>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Function to load recent files from localStorage
+        function loadRecentFiles() {
+            const recentFiles = JSON.parse(localStorage.getItem('spreadsheet_recent_files') || '[]');
+            const recentFilesContainer = document.querySelector('.recent-files');
+            
+            if (recentFiles.length === 0) {
+                return; // Keep the empty state message
+            }
+
+            // Clear empty state if we have files
+            recentFilesContainer.innerHTML = '';
+            
+            recentFiles.forEach(file => {
+                const fileElement = document.createElement('div');
+                fileElement.className = 'recent-file-item';
+                
+                // Choose icon based on file type
+                const icon = file.type === 'exported' ? '📊' : '📑';
+                const typeLabel = file.type === 'exported' ? 'Exported CSV' : 'Saved Sheet';
+                
+                const fileLink = document.createElement('a');
+                fileLink.href = `DO NOT TOUCH ME.html?file=${encodeURIComponent(file.path)}`;
+                fileLink.style.textDecoration = 'none';
+                fileLink.style.color = 'inherit';
+                fileLink.style.display = 'flex';
+                fileLink.style.flex = '1';
+                fileLink.style.alignItems = 'center';
+                
+                fileLink.innerHTML = `
+                    <div class="file-icon">${icon}</div>
+                    <div class="file-info">
+                        <h3 class="file-title">${file.name}</h3>
+                        <p class="file-date">
+                            <span class="file-type">${typeLabel}</span> • 
+                            ${file.lastOpened}
+                        </p>
+        </div>
+                `;
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'download-btn';
+                downloadBtn.innerHTML = '⬇️';
+                downloadBtn.title = 'Download spreadsheet';
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Get the spreadsheet data from localStorage
+                    const spreadsheetData = localStorage.getItem(`spreadsheet_file_${file.name}`);
+                    
+                    if (spreadsheetData) {
+                        // Create a blob with the data
+                        const blob = new Blob([spreadsheetData], { type: 'application/json' });
+                        
+                        // Create a temporary download link
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = URL.createObjectURL(blob);
+                        downloadLink.download = `${file.name}.json`;
+                        
+                        // Trigger the download
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+                        
+                        // Clean up the URL object
+                        URL.revokeObjectURL(downloadLink.href);
+                    } else {
+                        alert('Spreadsheet data not found!');
+                    }
+                };
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '🗑️';
+                deleteBtn.title = 'Delete spreadsheet';
+                deleteBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (confirm(`Are you sure you want to delete "${file.name}"?`)) {
+                        // Remove file content from localStorage
+                        localStorage.removeItem(`spreadsheet_file_${file.name}`);
+                        
+                        // Update recent files list
+                        const updatedFiles = recentFiles.filter(f => f.path !== file.path);
+                        localStorage.setItem('spreadsheet_recent_files', JSON.stringify(updatedFiles));
+                        
+                        // Reload the list
+                        loadRecentFiles();
+                        
+                        // Show empty state if no files left
+                        if (updatedFiles.length === 0) {
+                            recentFilesContainer.innerHTML = `
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">📊</div>
+                                    <h3 class="empty-state-title">No spreadsheets yet</h3>
+                                    <p class="empty-state-text">Create a new spreadsheet to get started</p>
+    </div>
+                            `;
+                        }
+                    }
+                };
+                
+                fileElement.appendChild(fileLink);
+                fileElement.appendChild(downloadBtn);
+                fileElement.appendChild(deleteBtn);
+                recentFilesContainer.appendChild(fileElement);
+            });
+        }
+
+        // Load recent files when the page loads
+        document.addEventListener('DOMContentLoaded', loadRecentFiles);
+    </script>
+</body>
+</html> 
